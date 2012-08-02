@@ -7,3 +7,6 @@ idea/
 .project
 .classpath
 .settings/
+
+# Grails
+target/
