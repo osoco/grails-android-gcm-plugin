@@ -3,8 +3,9 @@ package es.osoco.android.gcm
 class AndroidGcmService {
 
     static transactional = true
+	def grailsApplication 
 
-    def serviceMethod() {
-
+    private getApiKey() {
+		grailsApplication.config.android.gcm.api.key
     }
 }
