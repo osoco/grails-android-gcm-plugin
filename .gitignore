@@ -10,3 +10,6 @@ idea/
 
 # Grails
 target/
+
+# Bin
+bin/
