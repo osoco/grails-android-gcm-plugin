@@ -1,6 +1,7 @@
 package es.osoco.android.gcm
 
 import com.google.android.gcm.server.Message
+import com.google.android.gcm.server.MulticastResult
 import com.google.android.gcm.server.Result
 import com.google.android.gcm.server.Sender
 
@@ -12,19 +13,17 @@ class AndroidGcmService {
 
 	def grailsApplication
 
-    def Result sendCollapseMessage(String collapseKey, Map data, List<String> registrationIds) {
-        Message message = buildMessage(collapseKey, data)
-
-        registrationIds.each {
-            sender().send(message, registrationId, retries())
-        }
+    def Result sendCollapseMessage(String collapseKey, Map data, String registrationId) {
+        Message message = buildCollapseMessage(collapseKey, data)
+        sender().send(message, registrationId, retries())
     }
 
-    def Result send(Message message, String registrationId, int retries) {
-        sender().send(message, registrationId, retries)
+    def  MulticastResult sendMulticastCollapseMessage(String collapseKey, Map data, List<String> registrationIds) {
+        Message message = buildCollapseMessage(collapseKey, data)
+        sender().send(message, registrationIds, retries())
     }
 
-    private Message buildMessage(String collapseKey, Map data) {
+    private Message buildCollapseMessage(String collapseKey, Map data) {
         Message message = new Message.Builder()
             .collapseKey(collapseKey)
             .timeToLive(timeToLive())
