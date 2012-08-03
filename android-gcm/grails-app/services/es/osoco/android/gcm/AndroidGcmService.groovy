@@ -14,19 +14,36 @@ class AndroidGcmService {
 	def grailsApplication
 
     def Result sendCollapseMessage(String collapseKey, Map data, String registrationId) {
-        Message message = buildCollapseMessage(collapseKey, data)
-        sender().send(message, registrationId, retries())
+        sender().send(buildCollapseMessage(collapseKey, data), registrationId, retries())
     }
 
-    def  MulticastResult sendMulticastCollapseMessage(String collapseKey, Map data, List<String> registrationIds) {
-        Message message = buildCollapseMessage(collapseKey, data)
-        sender().send(message, registrationIds, retries())
+    def MulticastResult sendMulticastCollapseMessage(String collapseKey, Map data, List<String> registrationIds) {
+        sender().send(buildCollapseMessage(collapseKey, data), registrationIds, retries())
+    }
+
+    def Result sendInstantMessage(Map data, String registrationId) {
+        sender().send(buildInstantMessage(data), registrationId, retries())
+    }
+
+    def MulticastResult sendMulticastInstantMessage(Map data, List<String> registrationIds) {
+        sender().send(buildInstantMessage(data), registrationIds, retries())
     }
 
     private Message buildCollapseMessage(String collapseKey, Map data) {
         Message message = new Message.Builder()
             .collapseKey(collapseKey)
             .timeToLive(timeToLive())
+            .delayWhileIdle(delayWhileIdle())
+
+        data.each {
+            message.addData(it.key, it.value)
+        }
+
+        message.build()
+    }
+
+    private Message buildInstantMessage(String data) {
+        Message message = new Message.Builder()
             .delayWhileIdle(delayWhileIdle())
 
         data.each {
