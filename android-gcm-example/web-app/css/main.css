@@ -16,7 +16,7 @@ body {
     color: #333;
     font: 11px verdana, arial, helvetica, sans-serif;
 }
-#grailsLogo {
+#logo {
 	padding:20px;
 }
 
@@ -271,3 +271,58 @@ th.desc a {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
     padding-left: 28px;
 }
+
+div#logo {
+    padding: 1em;
+    background-color: #f60;
+}
+
+div#mainContent {
+    margin: 2em;
+}
+
+form
+{
+    display: table;
+}
+
+input[type='text'], select
+{
+    width: 90%;
+    text-align: right;
+}
+select
+{
+    width: 95%;
+}
+
+form .formEntryContainer
+{
+    display: table-row;
+}
+
+form .formEntryContainer .labelContainer, 
+form .formEntryContainer .inputContainer,
+form .formEntryContainer .submitContainer,
+form .formEntryContainer .actionsContainer
+{     
+    display: table-cell;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+form .formEntryContainer .labelContainer
+{
+    padding-right: 1.5em;
+}
+
+form .formEntryContainer .inputContainer
+{
+text-align: right;
+}
+
+button.add {
+    border: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+

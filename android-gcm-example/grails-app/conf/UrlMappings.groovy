@@ -7,7 +7,7 @@ class UrlMappings {
 			}
 		}
 
-		"/"(view:"/index")
+		"/"(controller: 'androidGcmSender')
 		"500"(view:'/error')
 	}
 }

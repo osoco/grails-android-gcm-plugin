@@ -90,4 +90,4 @@ log4j = {
 }
 
 
-android.gcm.api.key = 'memolo'
+android.gcm.api.key = 'AIzaSyAtC-BYNYetvtYHLSfNiWVzxUHiLlQkB9g'
