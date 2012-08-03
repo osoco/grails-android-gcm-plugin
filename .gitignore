@@ -1,6 +1,5 @@
 # IntelliJ
 .idea/
-idea/
 *.iml
 
 # Eclipse
@@ -8,8 +7,12 @@ idea/
 .classpath
 .settings/
 
-# Grails
+# Grails - Android
 target/
 
 # Bin
 bin/
+
+# Android
+out/
+gen/
