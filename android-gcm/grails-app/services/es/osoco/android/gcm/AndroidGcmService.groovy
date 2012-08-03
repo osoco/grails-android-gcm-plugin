@@ -10,7 +10,7 @@ class AndroidGcmService {
 
 	def grailsApplication
 
-    def Result sendMessage(Message message, java.lang.String registrationId, int retries) {
+    def Result sendMessage(Message message, String registrationId, int retries) {
         sender().send(message, registrationId, retries)
     }
 
