@@ -16,3 +16,9 @@ bin/
 # Android
 out/
 gen/
+
+# Grails
+stacktrace.log
+target
+plugins
+tld
