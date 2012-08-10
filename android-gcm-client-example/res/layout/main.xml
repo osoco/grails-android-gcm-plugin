@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        >
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="20dp" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/insertSenderIdLabel" />
+
+    <EditText
+        android:id="@+id/senderIdEditText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World, Main"
-            />
+            android:text="@string/insertMessageKeyLabel" />
+
+    <EditText
+            android:id="@+id/messageKeyEditText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/registerInTestServerButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/registerInTestServerButtonLabel" />
+
 </LinearLayout>
 
