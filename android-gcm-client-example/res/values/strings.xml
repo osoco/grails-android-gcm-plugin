@@ -2,5 +2,12 @@
 
 <resources>
     <string name="app_name">OSOCO GCM Tester</string>
-    <string name="ab_title">GCM Tester</string>
+    <string name="action_bar_title">GCM Tester</string>
+    
+    <string name="insertSenderIdLabel">Insert the sender ID supplied by Google:</string>
+    <string name="insertMessageKeyLabel">Insert the message key:</string>
+    <string name="registerInTestServerButtonLabel">Register in test server</string>
+    <string name="unregisterInTestServerButtonLabel">Unregister from test server</string>
+
+    <string name="newNotification">New push notification available!</string>
 </resources>
