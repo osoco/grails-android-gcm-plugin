@@ -24,7 +24,3 @@ log4j = {
 }
 
 api.key.config.property.name='android.gcm.api.key'
-
-android.gcm.time.to.live=2419200
-android.gcm.delay.'while'.idle=false
-android.gcm.retries=1
