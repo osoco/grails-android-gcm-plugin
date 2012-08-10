@@ -278,7 +278,8 @@ div#logo {
 }
 
 div#mainContent {
-    margin: 2em;
+    padding: 2em;
+    font-size: 110%;
 }
 
 form
@@ -319,6 +320,14 @@ form .formEntryContainer .inputContainer
 text-align: right;
 }
 
+h1,p {
+    margin: 1em 0.5em;
+}
+
+p {
+   
+}
+
 button.add {
     border: none;
     background: transparent;
@@ -326,3 +335,20 @@ button.add {
     padding: 0;
 }
 
+div#footer {
+    background:url(../images/pie/fondo.png) repeat-x bottom;
+    min-height: 700px;
+}
+
+div#footer div#wave {
+    width: 100%;
+    background:url(../images/pie/ola.png) no-repeat center;
+    min-height: 173px;
+}
+
+div#footer div#osoco-fish {
+    width: 100%;
+    background:url(../images/pie/pez.png) no-repeat center;
+    min-height: 159px;
+    margin-top: -100px;
+}

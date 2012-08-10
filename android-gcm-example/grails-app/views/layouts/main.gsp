@@ -14,5 +14,10 @@
         </div>
         <div id="logo"><a href="/"><img src="${resource(dir:'images',file:'logo.png')}" alt="OSOCO" border="0" /></a></div>
         <div id="mainContent"><g:layoutBody /></div>
+
+        <div id="footer">
+            <div id="wave">&nbsp;</div>
+            <div id="osoco-fish">&nbsp;</div>
+        </div>
     </body>
 </html>
