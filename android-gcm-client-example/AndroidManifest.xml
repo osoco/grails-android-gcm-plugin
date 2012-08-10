@@ -13,7 +13,7 @@
 
     <uses-permission android:name="es.osoco.gcmtester.permission.C2D_MESSAGE" />
 
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:theme="@android:style/Theme.Holo.Light" >
+    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:theme="@style/Theme.Sherlock.Light" >
 
         <activity android:name="Main" android:label="@string/app_name" >
             <intent-filter>
