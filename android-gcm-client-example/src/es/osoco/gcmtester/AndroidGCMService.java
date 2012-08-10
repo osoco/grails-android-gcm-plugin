@@ -1,10 +1,11 @@
-package es.osoco;
+package es.osoco.gcmtester;
 
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcel;
 import android.os.PowerManager;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -48,9 +49,13 @@ public class AndroidGCMService extends IntentService {
             } else if (action.equals("com.google.android.c2dm.intent.RECEIVE")) {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-                Notification notification = new Notification(R.drawable.ic_launcher, intent.getStringExtra("msg"), System.currentTimeMillis());
-                notification.flags |= Notification.FLAG_AUTO_CANCEL;
-                notification.number += 1;
+                Notification notification = new Notification.Builder(this)
+                                            .setAutoCancel(true)
+                                            .setSmallIcon(R.drawable.ic_launcher)
+                                            .setTicker(intent.getStringExtra("msg"))
+                                            .setWhen(System.currentTimeMillis())
+                                            .getNotification();
+
                 notificationManager.notify(0, notification);
             }
         } finally {
