@@ -21,7 +21,7 @@ class AndroidGcmService {
 	 */
     def Result sendCollapseMessage(String collapseKey, Map data, String registrationId, 
 			String apiKey = apiKeyFromConfig()) {
-        sendMessage(data, [registrationId], collapseKey, apiKey) //sender(apiKey).send(buildMessage(data, collapseKey), registrationId, retries())
+        sendMessage(data, [registrationId], collapseKey, apiKey)
     }
 
 	/**
@@ -29,7 +29,7 @@ class AndroidGcmService {
 	 */
     def MulticastResult sendMulticastCollapseMessage(String collapseKey, Map data, 
 			List<String> registrationIds, String apiKey = apiKeyFromConfig()) {
-        sendMessage(data, registrationIds, collapseKey, apiKey) //sender(apiKey).send(buildMessage(data, collapseKey), registrationIds, retries())
+        sendMessage(data, registrationIds, collapseKey, apiKey)
     }
 
 	/**
@@ -37,7 +37,7 @@ class AndroidGcmService {
 	 */
     def Result sendInstantMessage(Map data, String registrationId, 
 			String apiKey = apiKeyFromConfig()) {
-        sendMessage(data: data, registrationIds: [registrationId], apiKey: apiKey) //.send(buildMessage(data), registrationId, retries())
+        sendMessage(data: data, registrationIds: [registrationId], apiKey: apiKey)
     }
 
 	/**
@@ -45,7 +45,7 @@ class AndroidGcmService {
 	 */
     def MulticastResult sendMulticastInstantMessage(Map data, List<String> registrationIds,
 			String apiKey = apiKeyFromConfig()) {
-        sendMessage(data:data, registrationIds: registrationIds, apiKey: apiKey) // sender(apiKey).send(buildMessage(data), registrationIds, retries())
+        sendMessage(data:data, registrationIds: registrationIds, apiKey: apiKey)
     }	
 	
 	/**
