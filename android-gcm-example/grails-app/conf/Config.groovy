@@ -91,3 +91,6 @@ log4j = {
 
 
 android.gcm.api.key = 'AIzaSyAtC-BYNYetvtYHLSfNiWVzxUHiLlQkB9g'
+android.gcm.time.to.live=2419200
+android.gcm.delay.'while'.idle=false
+android.gcm.retries=1
