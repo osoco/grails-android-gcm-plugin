@@ -6,9 +6,11 @@ import java.util.Map;
 class AndroidGcmSenderController {
 
     def androidGcmService
+	def grailsApplication
 	
 	def index = { 
 		params.tokens = Device.findAll()*.token
+		params.apiKey = grailsApplication.config.android.gcm.api.key ?: ''
 		render view: 'index', model: params
     }
 	
@@ -21,7 +23,8 @@ class AndroidGcmSenderController {
 			currentMessages << [ (currentKey) : params.messageValue[currentMessages.size()]]
 		}
 		flash.message = 'received.message.response'
-		flash.args = [androidGcmService.sendMessage(messages, params.deviceToken, params.collapseKey).toString()]
+		flash.args = [androidGcmService.sendMessage(messages, params.deviceToken, 
+			params.collapseKey, params.apiKey).toString()]
 		redirect(action:'index', params: params)
 	}
 }
