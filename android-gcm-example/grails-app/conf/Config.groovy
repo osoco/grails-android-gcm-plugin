@@ -89,8 +89,7 @@ log4j = {
     warn   'org.mortbay.log'
 }
 
-
 android.gcm.api.key = 'AIzaSyAtC-BYNYetvtYHLSfNiWVzxUHiLlQkB9g'
-android.gcm.time.to.live=2419200
+android.gcm.time.to.live=1419200
 android.gcm.delay.'while'.idle=false
-android.gcm.retries=1
+android.gcm.retries=3

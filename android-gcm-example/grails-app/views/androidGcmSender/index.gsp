@@ -6,6 +6,11 @@
     <h1><g:message code="sender.title" /></h1>
     <p><g:message code="sender.appDescription" /></p>
     <p><g:message code="sender.usage" /></p>
+    <g:if test="${flash.message}">
+        <div class="message">
+            <g:message code="${flash.message}" args="${flash.args}"  />
+        </div>
+    </g:if>
     <g:form name="message" action="sendMessage" id="1">
     
         <div class="formEntryContainer">
@@ -13,9 +18,11 @@
                 <label for="deviceToken"><g:message code="sender.form.deviceToken"/></label>
             </div>
             <div class="inputContainer">
-                <div class="toDupe">
-                    <g:select name="deviceToken" from="${tokens}" value="${deviceToken}" noSelection="['':'-']"/></br>
-                </div>
+                <g:each var="token" in="${[deviceToken].flatten()}">
+                    <div class="toDupe">
+                        <g:select name="deviceToken" from="${tokens}" value="${token}" noSelection="['':'-']"/></br>
+                    </div>
+                </g:each>
             </div>
             <div class="actionsContainer">
                 <button type="button" class="add dupeParam deviceToken">
@@ -26,10 +33,12 @@
         
         <div class="formEntryContainer">
             <div class="labelContainer">
-                <g:message code="sender.form.multicast"/>
+                <label for="apiKey"><g:message code="sender.form.apiKey"/></label>
             </div>
             <div class="inputContainer">
-                <g:checkBox name="multicast" value="${multicast?:true}" />
+                <g:textField name="apiKey" value="${apiKey}" />
+            </div>
+            <div class="actionsContainer">
             </div>
         </div>
         
@@ -49,24 +58,26 @@
                 <g:message code="sender.form.message"/>
             </div>
             <div class="inputContainer">
-                <div class="toDupe">
-                    <div style="display:table"><div style="display:table-row">
-                        <div style="display:table-cell">
-                            <label for="messageKey"><g:message code="sender.form.messageKey" /></label>:
+                <g:each var="key" in="${[messageKey].flatten()}" status="index">
+                    <div class="toDupe">
+                        <div style="display:table"><div style="display:table-row">
+                            <div style="display:table-cell">
+                                <label for="messageKey"><g:message code="sender.form.messageKey" /></label>:
+                            </div>
+                            <div style="display:table-cell">
+                                <g:textField name="messageKey" value="${key}" />
+                            </div>
                         </div>
-                        <div style="display:table-cell">
-                            <g:textField name="messageKey" value="${messageKey}" />
-                        </div>
+                        <div style="display:table-row">
+                            <div style="display:table-cell">
+                                <label for="messageKey"><g:message code="sender.form.messageValue" /></label>:
+                            </div>
+                            <div style="display:table-cell">
+                                <g:textField name="messageValue" value="${[messageValue].flatten()[index]}" /><br/>
+                            </div>
+                        </div></div>
                     </div>
-                    <div style="display:table-row">
-                        <div style="display:table-cell">
-                            <label for="messageKey"><g:message code="sender.form.messageValue" /></label>:
-                        </div>
-                        <div style="display:table-cell">
-                            <g:textField name="messageValue" value="${messageValue}" /><br/>
-                        </div>
-                    </div></div>
-                </div>
+                </g:each>
             </div>
             <div class="actionsContainer">
                 <button type="button" class="add dupeParam">
@@ -89,9 +100,6 @@
             var prev = jQuery(this).parent().prev('.inputContainer');
             var toClone = prev.children('.toDupe :first');
             toClone.clone().appendTo(prev);
-        });
-        jQuery(".actionsContainer button.dupeParam.deviceToken").click(function(e) {
-            jQuery("input[name='multicast']").removeAttr("disabled");
         });
     </script>
 </html>
