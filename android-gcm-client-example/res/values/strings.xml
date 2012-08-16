@@ -10,4 +10,6 @@
     <string name="unregisterInTestServerButtonLabel">Unregister from test server</string>
 
     <string name="newNotification">New push notification available!</string>
+    <string name="pushMessageLabel">Push notification received:</string>
+    <string name="pushMessageReceivedLabel">Message will appear here …</string>
 </resources>
