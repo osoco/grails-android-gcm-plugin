@@ -15,85 +15,101 @@ class AndroidGcmService {
     static transactional = false
 
 	def grailsApplication
+		
+	/**
+	 * Sends a collapse message to one device
+	 */
+    def Result sendCollapseMessage(String collapseKey, Map data, String registrationId, 
+			String apiKey = apiKeyFromConfig()) {
+        sendMessage(data, [registrationId], collapseKey, apiKey)
+    }
 
 	/**
-	 * Sends a message by invoking the appropriate send method depending on the parameters
-	 * @param data The message
-	 * @param registrationIds The devices registration ids
-	 * @param collapseKey the collapse key (by default is empty)
-	 * @param multicast whether the message should be sent as a multicast message or not 
-	 * (by default it will be true if more than one registration id is passed)  
-	 * @return
+	 * Sends a collapse message to multiple devices
 	 */
-	def sendMessage(Map data, List<String> registrationIds, String collapseKey = '', boolean multicast = registrationIds.size() > 0)
-	{
-		def method = "send${multicast ? 'Multicast' : ''}${collapseKey ? 'Collapse' : 'Instant'}Message"
-		def params = (collapseKey ? [collapseKey] : []) + [data] + (multicast ?
-			[registrationIds] : [registrationIds[0]])
-		this.invokeMethod(method, params.toArray())
+    def MulticastResult sendMulticastCollapseMessage(String collapseKey, Map data, 
+			List<String> registrationIds, String apiKey = apiKeyFromConfig()) {
+        sendMessage(data, registrationIds, collapseKey, apiKey)
+    }
+
+	/**
+	 * Sends an instant message to one device
+	 */
+    def Result sendInstantMessage(Map data, String registrationId, 
+			String apiKey = apiKeyFromConfig()) {
+        sendMessage(data: data, registrationIds: [registrationId], apiKey: apiKey)
+    }
+
+	/**
+	 * Sends an instant message to multiple devices
+	 */
+    def MulticastResult sendMulticastInstantMessage(Map data, List<String> registrationIds,
+			String apiKey = apiKeyFromConfig()) {
+        sendMessage(data:data, registrationIds: registrationIds, apiKey: apiKey)
+    }	
+	
+	/**
+	 * Sends a message (instant by default, collapse if a collapse key is provided) 
+	 * to one or multiple devices, using the given api key (or obtaining it from the config
+	 * if none is provided)
+	 * @return a Result (if only one registration id is provided) or a MulticastResult
+	 */
+	def sendMessage(Map data, List<String> registrationIds, String collapseKey = '',
+			String apiKey = apiKeyFromConfig()) {
+		sender(apiKey).send(buildMessage(data, collapseKey),
+			registrationIds.size() > 1 ? registrationIds : registrationIds[0], retries())
 	}
-		
-    def Result sendCollapseMessage(String collapseKey, Map data, String registrationId) {
-        sender().send(buildCollapseMessage(collapseKey, data), registrationId, retries())
+
+    private Message buildMessage(Map data, String collapseKey = '') {
+		withMessageBuilder(data) {
+			messageBuilder ->
+			if (collapseKey) {
+				messageBuilder.collapseKey(collapseKey).timeToLive(timeToLive())
+			}
+		}
     }
 
-    def MulticastResult sendMulticastCollapseMessage(String collapseKey, Map data, List<String> registrationIds) {
-        sender().send(buildCollapseMessage(collapseKey, data), registrationIds, retries())
+	private Message withMessageBuilder(Map messageData, Closure builderConfigurator = null) {
+		Message.Builder messageBuilder = new Message.Builder().delayWhileIdle(delayWhileIdle())
+		if (builderConfigurator) {
+			builderConfigurator(messageBuilder)
+		}
+		addData(messageData, messageBuilder).build()
+	}
+
+	private addData(Map data, Message.Builder messageBuilder) 
+	{
+		data.each {
+			messageBuilder.addData(it.key, it.value)
+		}
+		return messageBuilder
+	}
+	
+    private sender(apiKey) {
+        new Sender(apiKey)
     }
 
-    def Result sendInstantMessage(Map data, String registrationId) {
-        sender().send(buildInstantMessage(data), registrationId, retries())
-    }
-
-    def MulticastResult sendMulticastInstantMessage(Map data, List<String> registrationIds) {
-        sender().send(buildInstantMessage(data), registrationIds, retries())
-    }
-
-    private Message buildCollapseMessage(String collapseKey, Map data) {
-        Message.Builder messageBuilder = new Message.Builder()
-            .collapseKey(collapseKey)
-            .timeToLive(timeToLive())
-            .delayWhileIdle(delayWhileIdle())
-
-        data.each {
-            messageBuilder.addData(it.key, it.value)
-        }
-
-        messageBuilder.build()
-    }
-
-    private Message buildInstantMessage(Map data) {
-        Message message = new Message.Builder()
-            .delayWhileIdle(delayWhileIdle())
-
-        data.each {
-            message.addData(it.key, it.value)
-        }
-
-        message.build()
-    }
-
-    private sender() {
-        new Sender(apiKey());
-    }
-
-    private apiKey() {
-        def key = grailsApplication.config.android.gcm.api.key
-        if(!key) {
-            throw new ApiKeyNotFoundException(grailsApplication.config.api.key.config.property.name)
-        }
-        key
+    private apiKeyFromConfig() {
+		def key = grailsApplication.config.android.gcm.api.key 
+        if (!key)
+		{ 
+			throw new ApiKeyNotFoundException(grailsApplication.config.api.key.config.property.name)
+		}
+		else
+		{
+			key
+		}
     }
 
     private timeToLive() {
-        grailsApplication.config.android.gcm.time.to.live
+        grailsApplication.config.android.gcm.time.to.live ?: 2419200
     }
 
     private delayWhileIdle() {
-        grailsApplication.config.android.gcm.delay.'while'.idle
+        grailsApplication.config.android.gcm.delay.'while'.idle ?: false
     }
 
     private retries() {
-        grailsApplication.config.android.gcm.retries
+        grailsApplication.config.android.gcm.retries ?: 1
     }
 }
