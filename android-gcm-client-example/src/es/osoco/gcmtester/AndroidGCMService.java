@@ -72,7 +72,7 @@ public class AndroidGCMService extends IntentService {
 
     private void handleRegistration(Intent intent) {
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://10.4.0.251:8080/android-gcm-example/device/subscribe");
+        HttpPost httppost = new HttpPost("http://shrouded-taiga-2145.herokuapp.com/device/subscribe");
         String deviceToken = intent.getStringExtra("registration_id");
         Log.d("OSOCO-GCM",deviceToken);
 
@@ -94,6 +94,10 @@ public class AndroidGCMService extends IntentService {
         String title = getResources().getString(R.string.newNotification);
         String message = intent.getStringExtra(Main.getMessageKey());
         showNotification(title, message);
+
+        Intent broadcastIntent = new Intent(Main.PUSH_NOTIFICATION_RECEIVED);
+        broadcastIntent.putExtra(Main.PUSH_NOTIFICATION_MESSAGE, message);
+        sendBroadcast(broadcastIntent);
     }
 
     private void showNotification(String title, String message) {
