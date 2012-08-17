@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,11 +50,12 @@ public class Main extends SherlockFragmentActivity {
             @Override
             public void onReceive(Context context, Intent intent)
             {
-                if(intent.getAction().equals(PUSH_NOTIFICATION_RECEIVED))
-                {
-                    TextView message = (TextView) Main.this.findViewById(R.id.pushMessageReceivedId);
-                    message.setText(intent.getStringExtra(PUSH_NOTIFICATION_MESSAGE));
-                }
+            if(intent.getAction().equals(PUSH_NOTIFICATION_RECEIVED)) {
+                TextView message = (TextView) Main.this.findViewById(R.id.pushMessageReceivedId);
+                message.setTextColor(Color.BLACK);
+                message.setTypeface(null, Typeface.BOLD);
+                message.setText(intent.getStringExtra(PUSH_NOTIFICATION_MESSAGE));
+            }
             }
         };
         registerReceiver(pushNotificationReceiver, new IntentFilter(PUSH_NOTIFICATION_RECEIVED));

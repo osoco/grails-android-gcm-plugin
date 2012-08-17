@@ -51,7 +51,8 @@
             android:id="@+id/pushMessageReceivedId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pushMessageReceivedLabel" />
+            android:text="@string/pushMessageReceivedLabel"
+            android:textColor="#D8D8D8"/>
 
     </LinearLayout>
 
