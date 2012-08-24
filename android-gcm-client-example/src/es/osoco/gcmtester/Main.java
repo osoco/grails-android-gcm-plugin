@@ -1,10 +1,8 @@
 package es.osoco.gcmtester;
 
+import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,10 +14,16 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class Main extends SherlockFragmentActivity {
 
-    private static String messageKey;
+    public static final String PREFERENCES_NAME = "es.osoco.gcmtester.preferences";
+    public static final String PREFERENCE_MESSAGE_KEY = "messageKey";
+    public static final String PREFERENCE_SENDER_ID = "senderId";
+
+    public static final String MESSAGE = "MESSAGE";
 
     public static final String PUSH_NOTIFICATION_RECEIVED = "PUSH_NOTIFICATION_RECEIVED";
     public static final String PUSH_NOTIFICATION_MESSAGE = "PUSH_NOTIFICATION_MESSAGE";
+
+    private SharedPreferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,17 +34,25 @@ public class Main extends SherlockFragmentActivity {
         getSupportActionBar().setIcon(R.drawable.logo);
         getSupportActionBar().setTitle(R.string.action_bar_title);
 
+        preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+        ((EditText) findViewById(R.id.senderIdEditText)).setText(preferences.getString(PREFERENCE_SENDER_ID, ""));
+        ((EditText) findViewById(R.id.messageKeyEditText)).setText(preferences.getString(PREFERENCE_MESSAGE_KEY, ""));
+
         Button registerInTestServerButton = (Button) findViewById(R.id.registerInTestServerButton);
         registerInTestServerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                messageKey = ((EditText) findViewById(R.id.messageKeyEditText)).getText().toString();
+                String senderId = ((EditText) findViewById(R.id.senderIdEditText)).getText().toString();
+                String messageKey = ((EditText) findViewById(R.id.messageKeyEditText)).getText().toString();
 
-                EditText senderIdEditText = (EditText) findViewById(R.id.senderIdEditText);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(PREFERENCE_SENDER_ID, senderId);
+                editor.putString(PREFERENCE_MESSAGE_KEY, messageKey);
+                editor.commit();
 
                 Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
                 registrationIntent.putExtra("app", PendingIntent.getBroadcast(Main.this, 0, new Intent(), 0));
-                registrationIntent.putExtra("sender", senderIdEditText.getText().toString());
+                registrationIntent.putExtra("sender", senderId);
                 startService(registrationIntent);
             }
         });
@@ -51,17 +63,30 @@ public class Main extends SherlockFragmentActivity {
             public void onReceive(Context context, Intent intent)
             {
             if(intent.getAction().equals(PUSH_NOTIFICATION_RECEIVED)) {
-                TextView message = (TextView) Main.this.findViewById(R.id.pushMessageReceivedId);
-                message.setTextColor(Color.BLACK);
-                message.setTypeface(null, Typeface.BOLD);
-                message.setText(intent.getStringExtra(PUSH_NOTIFICATION_MESSAGE));
+                showMessage(intent.getStringExtra(PUSH_NOTIFICATION_MESSAGE));
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.cancel(0);
             }
             }
         };
         registerReceiver(pushNotificationReceiver, new IntentFilter(PUSH_NOTIFICATION_RECEIVED));
     }
 
-    public static String getMessageKey() {
-        return messageKey;
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Intent intent = getIntent();
+
+        if(intent != null && intent.getStringExtra(MESSAGE) != null) {
+            showMessage(intent.getStringExtra(MESSAGE));
+        }
+    }
+
+    private void showMessage(String message) {
+        TextView messageTextView = (TextView) Main.this.findViewById(R.id.pushMessageReceivedId);
+        messageTextView.setTextColor(Color.BLACK);
+        messageTextView.setTypeface(null, Typeface.BOLD);
+        messageTextView.setText(message);
     }
 }

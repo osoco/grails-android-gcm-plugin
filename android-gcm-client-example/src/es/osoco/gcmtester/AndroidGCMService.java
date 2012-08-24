@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.PowerManager;
 import android.util.Log;
 import org.apache.http.NameValuePair;
@@ -19,6 +20,11 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static es.osoco.gcmtester.Main.PREFERENCES_NAME;
+import static es.osoco.gcmtester.Main.PREFERENCE_SENDER_ID;
+import static es.osoco.gcmtester.Main.PREFERENCE_MESSAGE_KEY;
+import static es.osoco.gcmtester.Main.MESSAGE;
 
 public class AndroidGCMService extends IntentService {
 
@@ -71,13 +77,16 @@ public class AndroidGCMService extends IntentService {
     }
 
     private void handleRegistration(Intent intent) {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://shrouded-taiga-2145.herokuapp.com/device/subscribe");
+        HttpPost httppost = new HttpPost("http://grails-android-gcm-sender.herokuapp.com/device/subscribe");
         String deviceToken = intent.getStringExtra("registration_id");
         Log.d("OSOCO-GCM",deviceToken);
 
         try {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("projectId", preferences.getString(PREFERENCE_SENDER_ID, "")));
             nameValuePairs.add(new BasicNameValuePair("deviceToken", deviceToken));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -91,8 +100,10 @@ public class AndroidGCMService extends IntentService {
     }
 
     private void handleNotificationReception(Intent intent) {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+
         String title = getResources().getString(R.string.newNotification);
-        String message = intent.getStringExtra(Main.getMessageKey());
+        String message = intent.getStringExtra(preferences.getString(PREFERENCE_MESSAGE_KEY, ""));
         showNotification(title, message);
 
         Intent broadcastIntent = new Intent(Main.PUSH_NOTIFICATION_RECEIVED);
@@ -100,13 +111,17 @@ public class AndroidGCMService extends IntentService {
         sendBroadcast(broadcastIntent);
     }
 
+    @SuppressWarnings("deprecation")
     private void showNotification(String title, String message) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         Notification notification = new Notification(R.drawable.logo, title, System.currentTimeMillis());
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-        PendingIntent activity = PendingIntent.getActivity(this, 0, new Intent(this, Main.class), 0);
+        Intent intent = new Intent(this, Main.class);
+        intent.putExtra(MESSAGE, message);
+
+        PendingIntent activity = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notification.setLatestEventInfo(this, title, message, activity);
 
         notificationManager.notify(0, notification);
