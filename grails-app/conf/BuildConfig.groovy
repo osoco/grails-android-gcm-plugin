@@ -15,4 +15,10 @@ grails.project.dependency.resolution = {
 	dependencies {
 		runtime 'com.googlecode.json-simple:json-simple:1.1'
 	}
+
+	plugins {
+		build(':release:2.0.4', ':rest-client-builder:1.0.2') {
+			export = false
+		}
+	}
 }
