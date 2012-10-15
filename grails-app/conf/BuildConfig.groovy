@@ -10,10 +10,14 @@ grails.project.dependency.resolution = {
 		grailsCentral()
 		mavenLocal()
 		mavenCentral()
+
+		mavenRepo 'https://github.com/slorber/gcm-server-repository/raw/master/releases'
 	}
 
 	dependencies {
 		runtime 'com.googlecode.json-simple:json-simple:1.1'
+
+		compile 'com.google.android.gcm:gcm-server:1.0.2'
 	}
 
 	plugins {
