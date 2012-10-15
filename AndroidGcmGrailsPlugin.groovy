@@ -11,7 +11,7 @@ class AndroidGcmGrailsPlugin {
     ]
 
     def author = "OSOCO"
-    def authorEmail = "info@osoco.es"
+    def authorEmail = "diego.toharia@osoco.es"
     def organization = [name: "OSOCO", url: "http://www.osoco.es/"]
     def developers = [ 
         [ name: "Adrian Santalla", email: "adrian.santalla@gmail.com" ],
