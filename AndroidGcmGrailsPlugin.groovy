@@ -10,12 +10,15 @@ class AndroidGcmGrailsPlugin {
             "grails-app/views/error.gsp"
     ]
 
-    // TODO Fill in these fields
-    def author = "Your name"
-    def authorEmail = ""
-    def title = "Plugin summary/headline"
+    def author = "OSOCO"
+    def authorEmail = "info@osoco.es"
+    def organization = [name: "OSOCO", url: "http://www.osoco.es/"]
+    def developers = [ 
+        [ name: "Adrian Santalla", email: "adrian.santalla@gmail.com" ],
+        [ name: "Diego Toharia", email: "diego@toharia.com" ]]
+    def title = "Android GCM (Google Cloud Messaging) service plugin"
     def description = '''\\
-Brief description of the plugin.
+The plugin provides a service to easily access the Google Cloud Messaging (GCM) services 
 '''
 
     // URL to the plugin's documentation
