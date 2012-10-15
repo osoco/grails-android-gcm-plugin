@@ -3,8 +3,6 @@
 *.iml
 
 # Eclipse
-.project
-.classpath
 .settings/
 
 # Grails - Android
@@ -18,7 +16,6 @@ out/
 gen/
 
 # Grails
-stacktrace.log
-target
-plugins
-tld
+*.log
+plugin.xml
+*.zip
