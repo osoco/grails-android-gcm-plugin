@@ -20,6 +20,9 @@ class AndroidGcmGrailsPlugin {
     def description = '''\\
 The plugin provides a service to easily access the Google Cloud Messaging (GCM) services 
 '''
+    def license = "APACHE"
+    def issueManagement = [system: "GitHub", url: "https://github.com/osoco/grails-android-gcm-plugin/issues"]
+    def scm = [url: "https://github.com/osoco/grails-android-gcm-plugin/"]
 
     // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/android-gcm"
