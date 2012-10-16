@@ -1,5 +1,5 @@
 class AndroidGcmGrailsPlugin {
-    def version = "0.1"
+    def version = "0.2"
     def grailsVersion = "1.3.7 > *"
     def author = "OSOCO"
     def authorEmail = "diego.toharia@osoco.es"
