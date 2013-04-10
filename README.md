@@ -12,7 +12,7 @@ The plugin provides a service (androidGcmService) that has the following methods
 The plugin can be configured with the following options (to be placed in the project Config.groovy):
    - android.gcm.api.key - The GCM service API key. Must be passed as a method parameter if is not provided in the config
    - android.gcm.time.to.live - The message TTL (2419200 by default)
-   - android.gcm.delay.'while'.idle - Should the message be delayed with the device is idle (false by default)
+   - android.gcm.delay.'while'.idle - Should the message be delayed when the device is idle (false by default)
    - android.gcm.retries - Number of message sent retries (1 by default)
 
 A sample project that uses the plugin is available in https://github.com/osoco/grails-android-gcm-server-example (the
