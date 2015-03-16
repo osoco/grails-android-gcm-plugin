@@ -34,7 +34,7 @@ class AndroidGcmService {
 	 */
 	Result sendInstantMessage(Map data, String registrationId,
 			String apiKey = apiKeyFromConfig()) {
-		sendMessage(data: data, registrationIds: [registrationId], apiKey: apiKey)
+		sendMessage(data,[registrationId],'',apiKey)
 	}
 
 	/**
@@ -42,7 +42,7 @@ class AndroidGcmService {
 	 */
 	MulticastResult sendMulticastInstantMessage(Map data, List<String> registrationIds,
 			String apiKey = apiKeyFromConfig()) {
-		sendMessage(data:data, registrationIds: registrationIds, apiKey: apiKey)
+		sendMessage(data, registrationIds,'',apiKey)
 	}
 
 	/**
